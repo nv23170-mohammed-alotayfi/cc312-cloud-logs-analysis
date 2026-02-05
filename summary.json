@@ -1,0 +1,12 @@
+{
+  "total_lines": 200000,
+  "valid_lines": 0,
+  "invalid_lines": 200000,
+  "levels": {
+    "INFO": 0,
+    "WARN": 0,
+    "ERROR": 0
+  },
+  "top_services": [],
+  "top_errors": []
+}
