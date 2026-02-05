@@ -1,0 +1,9 @@
+--- LOG ANALYSIS REPORT ---
+Total Lines Processed: 200000
+Invalid Format Lines:  4893
+---------------------------
+INFO:          135269
+WARN:          38420
+ERROR:         19442
+Unknown Level: 1976
+---------------------------

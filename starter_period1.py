@@ -33,16 +33,19 @@ def parse_line(line: str):
     Expected format:
     timestamp | level | service | message
     """
-    # TODO 1: strip whitespace and ignore empty lines (treat empty as invalid)
-    # TODO 2: split by '|' and trim whitespace around each part
-    # TODO 3: if you do NOT have exactly 4 parts, return None
-    # TODO 4: return the 4 parts (timestamp, level, service, message)
+    clean_line = line.strip()
+    if not clean_line:
+        return None
+    parts = [part.strip() for part in clean_line.split('|')]
+    if len(parts) != 4:
+        return None
+    return tuple(parts)
     pass
 
 
 def normalize_level(level: str) -> str:
     """Normalize log level to uppercase."""
-    # TODO 5: return level in uppercase (hint: .upper())
+    return level.upper()    
     pass
 
 
@@ -63,21 +66,40 @@ def main():
         print(f"ERROR: Could not find {LOG_FILE}. Make sure logs.txt is in the same folder.")
         return
 
-    # TODO 6: open logs.txt and loop through each line
-    # For each line:
-    #   - increase total_lines
-    #   - parse the line using parse_line()
-    #   - if parse_line() returns None -> invalid_lines += 1 and continue
-    #   - normalize the level
-    #   - if level in ALLOWED_LEVELS -> level_counts[level] += 1
-    #   - else -> level_counts["INVALID_LEVEL"] += 1
+    with LOG_FILE.open("r") as f:
+        for line in f:
+            total_lines += 1
+           
+            parsed = parse_line(line)
+            if parsed is None:
+                invalid_lines += 1
+                continue
+           
+            # Unpack the tuple and normalize
+            _, level, _, _ = parsed
+            norm_level = normalize_level(level)
+           
+            # Update counts
+            if norm_level in ALLOWED_LEVELS:
+                level_counts[norm_level] += 1
+            else:
+                level_counts["INVALID_LEVEL"] += 1
 
-    # TODO 7: Create a summary string (multi-line) with:
-    # Total lines, Invalid lines, INFO, WARN, ERROR, INVALID_LEVEL
+    summary = f"""--- LOG ANALYSIS REPORT ---
+Total Lines Processed: {total_lines}
+Invalid Format Lines:  {invalid_lines}
+---------------------------
+INFO:          {level_counts['INFO']}
+WARN:          {level_counts['WARN']}
+ERROR:         {level_counts['ERROR']}
+Unknown Level: {level_counts['INVALID_LEVEL']}
+---------------------------
+"""
 
-    # TODO 8: Print the summary
+    print(summary)
 
-    # TODO 9: Save the summary into period1_report.txt
+    OUTPUT_REPORT.write_text(summary)
+    print(f"Report successfully saved to {OUTPUT_REPORT}")
 
     pass
 

@@ -32,12 +32,15 @@ def parse_line(line: str):
     """
     Returns (timestamp, level, service, message) OR None if format invalid.
     """
-    # TODO 1: Implement parse_line (same rules as Period 1)
+    line = line.strip()
+    if not line:
+        return None
     pass
 
 
 def normalize_level(level: str) -> str:
-    # TODO 2: return uppercase level
+    """Return uppercase level."""
+    return level.upper()
     pass
 
 
